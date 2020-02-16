@@ -2,6 +2,7 @@ require_relative 'music_importer'
 require_relative 'song'
 require_relative 'artist'
 require_relative 'genre'
+require 'pry'
 
 class MusicLibraryController
 
@@ -52,19 +53,40 @@ class MusicLibraryController
   
   # def list_songs
   #   sorted_songs = Song.all.sort { |a, b| a.name <=> b.name }
-    # sorted_songs.each_with_index do |song, idx|
-    #   puts "#{idx + 1}. #{song.artist.name} - #{song.name} - #{song.genre.name}"
-    # end
+  #   sorted_songs.each_with_index do |song, idx|
+  #     puts "#{idx + 1}. #{song.artist.name} - #{song.name} - #{song.genre.name}"
+  #   end
+  # end
+  
+  # def list_songs
+  #   sorted_songs = Song.all.sort_by do |song|
+  #     song.name
+  #   end
+  #   sorted_songs.each_with_index do |song, idx|
+  #     puts "#{idx + 1}. #{song.artist.name} - #{song.name} - #{song.genre.name}"
+  #   end
+  # end
+  
+  # def list_songs
+  #   sorted_songs = Song.all.sort_by(&:name)
+  #   sorted_songs.each_with_index do |song, idx|
+      # puts "#{idx + 1}. #{song.artist.name} - #{song.name} - #{song.genre.name}"
+  #   end
   # end
   
   def list_songs
-    sorted_songs = Song.all.sort_by do |song|
-      song.name
-    end
-    sorted_songs.each_with_index do |song, idx|
-      puts "#{idx + 1}. #{song.artist.name} - #{song.name} - #{song.genre.name}"
+    Song.all.sort{ |a, b| a.name <=> b.name }.each.with_index(1) do |song, idx|
+      puts "#{idx}. #{song.artist.name} - #{song.name} - #{song.genre.name}"
     end
   end
+  
+  # def list_songs
+  #   idx = 1
+  #   Song.all.sort{ |a, b| a.name <=> b.name }.each do |song|
+  #     puts "#{idx}. #{song.artist.name} - #{song.name} - #{song.genre.name}"
+  #     idx += 1
+  #   end
+  # end
   
   def list_artists
     sorted_artists = Artist.all.sort { |a, b| a.name <=> b.name }
@@ -110,13 +132,15 @@ class MusicLibraryController
   def play_song
     songs = Song.all.sort { |a, b| a.name <=> b.name }
     puts "Which song number would you like to play?"
-    list_songs
+    # list_songs
     
     usr_choice = gets.strip
     
     if (1..Song.all.length).to_a.include?(usr_choice)
-      song = list_of_songs[usr_choice + 1]
+      song = songs[usr_choice + 1]
       puts "Playing #{song.name} by #{song.artist.name}"
+    else
+      return
     end
   end
   
