@@ -1,5 +1,5 @@
 class Artist
-  attr_accessor :name
+  attr_accessor :name, :songs
 
   @@all = []
 
@@ -34,6 +34,13 @@ class Artist
   
   def self.find_by_name(name)
     @@all.detect { |artist| artist.name == name }  
+  end
+  
+  def add_song(song)
+    if !@songs.include?(song)
+      @songs << song
+    end
+    song.artist = self
   end
   
 end
