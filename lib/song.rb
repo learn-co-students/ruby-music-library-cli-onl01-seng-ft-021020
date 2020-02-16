@@ -1,13 +1,24 @@
+require_relative './concerns/findable'
+
 class Song
-  attr_accessor :name, :genre, :artist
-  # attr_reader :artist
+  extend Concerns::Findable
+  
+  attr_accessor :name
+  attr_reader :artist, :genre
 
   @@all = []
 
-  def initialize(name, artist)
+  def initialize(name, artist = nil, genre = nil)
     @name = name
-  
     
+    if artist
+      self.artist = artist
+    end
+    
+    if genre
+      self.genre = genre
+    end
+  
     save
   end
   
@@ -28,16 +39,14 @@ class Song
     new_song
   end
   
-  # def artist=(artist)
-  #   artist.add_song(self)
-  # end
-  
-  def genre=()
-    Genre.add_song(self)
+  def artist=(artist)
+    artist.add_song(self) unless artist.songs.include?(self)
+    @artist = artist
   end
   
-  def self.find_by_name(name)
-    @@all.detect { |song| song.name == name }  
+  def genre=(genre)
+    genre.songs << self unless genre.songs.include?(self)
+    @genre = genre
   end
   
 end

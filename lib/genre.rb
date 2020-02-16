@@ -1,6 +1,9 @@
+require_relative './concerns/findable'
 
 class Genre
-  attr_accessor :name
+  extend Concerns::Findable
+  
+  attr_accessor :name, :songs
 
   @@all = []
 
@@ -35,6 +38,11 @@ class Genre
   
   def self.find_by_name(name)
     @@all.detect { |genre| genre.name == name }  
+  end
+  
+  def artists
+    @songs.collect { |song| song.artist }.uniq
+    
   end
   
 end
