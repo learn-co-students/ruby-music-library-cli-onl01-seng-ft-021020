@@ -20,6 +20,10 @@ class Artist
     @songs << song if !songs.include?(song)
   end
 
+  def genres
+    self.songs.map{ |song| song.genre }.uniq
+  end
+
   # CLASS METHODS
 
   def self.all
