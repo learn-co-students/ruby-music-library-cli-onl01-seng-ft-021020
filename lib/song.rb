@@ -1,3 +1,5 @@
+require_relative './concerns/findable'
+
 class Song
   extend Concerns::Findable
   
@@ -17,7 +19,6 @@ class Song
       self.genre = genre
     end
   
-    save
   end
   
   def self.all 
@@ -34,6 +35,8 @@ class Song
   
   def self.create(name)
     new_song = self.new(name)
+    # new.song.save
+    @@all << new_song
     new_song
   end
   
