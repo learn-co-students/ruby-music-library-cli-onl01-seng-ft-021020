@@ -1,3 +1,5 @@
+require_relative './music_importer.rb'
+
 class Song
 
   attr_accessor :name
@@ -51,4 +53,24 @@ class Song
   def self.find_or_create_by_name(name)
     self.find_by_name(name) || self.create(name)
   end
+
+  # def self.new_from_filename(filename)
+  #   artist, title, genre = filename.split(" - ")
+  #   genre = genre.split(".").first
+  #   Song.new(title, Artist.new(artist), Genre.new(genre)) if !self.find_by_name(title)
+  # end
+
+  def self.new_from_filename(filename)
+    artist, title, genre = filename.split(" - ")
+    genre = genre.split(".").first
+    song = Song.find_or_create_by_name(title)
+    song.artist = Artist.find_or_create_by_name(artist)
+    song.genre = Genre.find_or_create_by_name(genre)
+    song
+  end
+
+  def self.create_from_filename(filename)
+    self.new_from_filename(filename).save
+  end
+
 end
