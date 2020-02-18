@@ -22,4 +22,59 @@ class MusicLibraryController
     end
   end
 
+  def list_songs
+    songs = Song.all.map{ |song| [song.artist.name, song.name, song.genre.name] }.sort{ |a, b| a[1] <=> b[1] }
+    songs.each_with_index{ |song, i| puts "#{i+1}. #{song[0]} - #{song[1]} - #{song[2]}" }
+  end
+
+  def list_artists
+    artists = Artist.all.sort{ |a, b| a.name <=> b.name }.map.with_index do |artist,i| 
+      puts "#{i+1}. #{artist.name}"
+      artist
+    end
+    artists
+  end
+
+  def list_genres
+    genres = Genre.all.sort{ |a, b| a.name <=> b.name }.map.with_index do |genre,i| 
+      puts "#{i+1}. #{genre.name}"
+      genre
+    end
+    genres
+  end
+
+  def list_songs_by_artist
+    puts "Please enter the name of an artist:"
+    artist = Artist.find_by_name(gets.chomp)
+    if artist != nil
+      songs = artist.songs.sort{ |a, b| a.name <=> b.name }.map.with_index do |song, i|
+        puts "#{i+1}. #{song.name} - #{song.genre.name}"
+        song
+      end
+      songs
+    end
+  end
+
+  def list_songs_by_genre
+    puts "Please enter the name of a genre:"
+    genre = Genre.find_by_name(gets.chomp)
+    if genre != nil
+      songs = genre.songs.sort{ |a, b| a.name <=> b.name }.map.with_index do |song, i|
+        puts "#{i+1}. #{song.artist.name} - #{song.name}"
+        song
+      end
+      songs
+    end
+  end
+
+  def play_song
+    puts "Which song number would you like to play?"
+    song_arr = Song.all.map{ |song| [song.artist.name, song.name, song.genre.name] }.sort{ |a, b| a[1] <=> b[1] }
+    choice = gets.chomp.to_i - 1
+    if choice > 0 && choice < song_arr.length
+      puts "Playing #{song_arr[choice][1]} by #{song_arr[choice][0]}" 
+    end
+  end
+
+
 end
