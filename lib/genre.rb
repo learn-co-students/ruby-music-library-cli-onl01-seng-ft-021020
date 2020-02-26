@@ -3,14 +3,12 @@ class Genre
     attr_reader :songs
 
     @@all = []
-    
-    extend Concerns::Memorable
+
     extend Concerns::Findable
 
     def initialize(name)
         @name = name
         @songs = []
-        save
     end
 
     def save
@@ -21,12 +19,20 @@ class Genre
         @@all
     end
 
+    def self.destroy_all
+        @@all.clear
+    end
+
+    def self.create(name)
+        Genre.new(name).tap{|g| g.save}
+    end
+
     def add_song(song_object)
         song_object.genre ||= self
         @songs << song_object unless @songs.include?(song_object)
     end
 
     def artists
-        Song.all.select{|s| s.genre == self}.collect{|s| s.artist}.uniq
+        @songs.collect{|s| s.artist}.uniq
     end
 end
