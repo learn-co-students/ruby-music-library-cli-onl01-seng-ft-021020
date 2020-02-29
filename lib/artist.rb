@@ -1,5 +1,6 @@
 require 'pry'
 class Artist
+ 
  extend Concerns::Findable
  attr_accessor :name, :genre, :songs
  #attr_reader 
@@ -25,7 +26,6 @@ class Artist
   
   def self.create(name) 
     song = self.new(name) 
-    song.save 
     song
   end 
   
@@ -42,21 +42,5 @@ class Artist
     artist_genres.uniq
   end 
   
-  
 end 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
